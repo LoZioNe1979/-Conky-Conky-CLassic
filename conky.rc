@@ -1,0 +1,109 @@
+#######################################
+## conky Lo Zio for Cinnamon Desktop ##
+#######################################
+# conky -dc ~/.conky/.conkyrc10
+# from .bash_aliases where the complete line is 'alias conky='nohup conky -dc ~/.conky/.conkyrc10 &''
+
+
+background no
+font DroidSans:size=8
+#xftfont sans:size=10
+use_xft yes
+xftalpha 0.9
+update_interval 1.0
+total_run_times 0
+own_window yes
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_type normal
+double_buffer yes
+minimum_size 230
+maximum_width 225
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders yes
+default_color white
+default_shade_color black
+default_outline_color green
+alignment top_right
+gap_x 15
+gap_y 50
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+override_utf8_locale no
+uppercase no
+
+
+# Define some Colors
+color0 tan2 # Headings
+color1 grey # Horizonal lines
+color2 Ivory2 # Text
+
+
+
+TEXT
+${font sans-serif:bold:size=8}$color1 SYSTEM $color${hr 2}
+${font sans-serif:normal:size=8}$color $sysname $kernel on $machine
+$color1 Host:$alignr$color $nodename
+$color1 Uptime:$alignr$color $uptime
+$color1 Swap:$alignr$color $swap / $swapmax
+$color1 RAM:$alignr$color $mem / $memmax
+$memperc% $membar
+
+Total CPU usage:
+$color1 Core 1 Usage:$color ${alignc} ${cpu cpu1}% ${cpubar cpu1}
+Core 1 temp $color${hwmon temp 1}
+$color1 Core 2 Usage:$color ${alignc} ${cpu cpu2}% ${cpubar cpu2}
+Core 2 temp $color${hwmon temp 2}
+
+GPU: ${alignr}Nvidia GeForce 550Ti
+
+Use ${alignr}${execi 15 nvidia-settings -tq [gpu:0]/GPUUtilization| cut -d'=' -f2 | cut -d',' -f1}% 
+Fan ${alignr}${execi 15 nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t}%
+Temp ${alignr}${execi 15 nvidia-settings -q  [gpu:0]/GPUCoreTemp -t} C
+ClockFreqs ${alignr}${execi 15 nvidia-settings -q [gpu:0]/GPUCurrentClockFreqs -t} MHz 
+Memory ${alignr}${execi 15 nvidia-settings -q [gpu:0]/UsedDedicatedGPUMemory -t} / ${exec nvidia-settings -q [gpu:0]/TotalDedicatedGPUMemory -t} MiB
+
+${font sans-serif:bold:size=8}$color1 FILESYSTEM $color${hr 2}
+${font sans-serif:normal:size=8}/root $alignc $color1 used: $color${fs_used /} $color1 of: $color${fs_size /} 
+$color1 free: $color${fs_free /}
+/var $alignc  $color1 used: $color${fs_used /var} $color1 of: $color${fs_size /var}
+ $color1 free: $color${fs_free /var}
+/swap $alignc $color1 used: $color $swap $color1 of $color$swapmax
+/tmp $alignc  $color1 used: $color${fs_used /tmp} $color1 of:$color ${fs_size /tmp}
+ $color1 free:$color ${fs_free /tmp}
+/home  $alignc $color1 used: $color${fs_used /home} $color1 of:$color ${fs_size /home}
+ $color1 free:$color ${fs_free /home}
+/Dati $alignc $color1 used: $color${fs_used /media/Dati} $color1 of:$color ${fs_size /media/Dati}
+ $color1 free:$color ${fs_free /media/Dati}
+/Film $alignc $color1 used: $color${fs_used /media/Film} $color1 of:$color ${fs_size /media/Film}
+ $color1 free:$color ${fs_free /media/Film}
+
+${font sans-serif:bold:size=8}$color1 PROCESSOR $color ${hr 2}
+Top Name       $alignc Top PID $alignr Top CPU
+   
+${font sans-serif:normal:size=8}${top name 1} $alignc ${top pid 1} $alignr${top cpu 1}
+${top name 2} $alignc ${top pid 2} $alignr${top cpu 2}
+${top name 3} $alignc ${top pid 3} $alignr${top cpu 3}
+${top name 4} $alignc ${top pid 4} $alignr${top cpu 4}
+${top name 5} $alignc ${top pid 5} $alignr${top cpu 5}
+
+${font sans-serif:bold:size=8}$color1 MEMORY $color ${hr 2}
+Top Name       $alignc Top PID $alignr Top MEM
+   
+${font sans-serif:normal:size=8}${top_mem name 1} $alignc ${top pid 1} $alignr${top mem 1}
+${top_mem name 2} $alignc ${top pid 2} $alignr${top mem 2}
+${top_mem name 3} $alignc ${top pid 3} $alignr${top mem 3}
+${top_mem name 4} $alignc ${top pid 4} $alignr${top mem 4}
+${top_mem name 5} $alignc ${top pid 5} $alignr${top mem 5}
+
+ 
+${font sans-serif:bold:size=8}NETWORK ${hr 2}
+
+${if_existing /proc/net/route enp2s0} ${font sans-serif:italic:size=8} $alignc Wired
+${font sans-serif:normal:size=8}$color1 IP address: $alignr $color ${addr enp2s0}
+$color1 Download $color ${downspeed enp2s0} kb/s $alignr $color1 Total: $color ${totaldown enp2s0}
+$color1 Upload   $color ${upspeed enp2s0} kb/s  $alignr $color1 Total:$color ${totalup enp2s0}
+${endif} 
